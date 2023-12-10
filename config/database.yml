@@ -1,0 +1,17 @@
+# config/database.yml
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  port: 5431
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  database: iphone_survey_development
+
+test:
+  <<: *default
+  database: iphone_survey_test

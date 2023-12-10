@@ -1,0 +1,38 @@
+<div class="form-container">
+  <%= form_with(model: @feedback, url: surveys_create_path, method: :post) do |form| %>
+    <div class="form-section">
+      <h1 class="text-3xl font-bold mb-4 text-center text-blue-800">iPhone 13 User Experience Survey</h1>
+      <%= form.text_field :name, placeholder: 'Your Name', class: 'mb-4 p-2 block w-full', required: true %>
+      <%= form.email_field :email, placeholder: 'Your Email', class: 'mb-4 p-2 block w-full', required: true %>
+    </div>
+
+    <% @feedback.responses.each do |response| %>
+      <%= form.fields_for :responses, response do |response_form| %>
+        <div class="form-section">
+          <p><%= response.question.content %></p>
+          <%= response_form.hidden_field :question_id, value: response.question_id %>
+          <div class="flex items-center space-x-2">
+            <%= response_form.radio_button :rating, 1, class: 'mr-1', required: true %> 1
+            <%= response_form.radio_button :rating, 2, class: 'mr-1', required: true %> 2
+            <%= response_form.radio_button :rating, 3, class: 'mr-1', required: true %> 3
+            <%= response_form.radio_button :rating, 4, class: 'mr-1', required: true %> 4
+            <%= response_form.radio_button :rating, 5, class: 'mr-1', required: true %> 5
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+    <%= form.submit 'Submit Feedback', class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer' %>
+  <% end %>
+</div>
+
+<% if flash[:error] %>
+  <div id="error-popup" class="error-popup">
+    <%= flash[:error] %>
+  </div>
+  <script>
+    setTimeout(function() {
+      document.getElementById('error-popup').style.display = 'none';
+    }, 3000);
+  </script>
+<% end %>
